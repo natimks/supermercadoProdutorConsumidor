@@ -12,11 +12,12 @@ public class Main {
 
 				
 				ArrayList<Produto> carrinho = new ArrayList<>();
-				
+				EsteiraBuffer esteiraBuffer = new EsteiraBuffer();
 				// try to start producer and consumer giving each of them access
 				// to sharedLocation
 				try {
-					application.execute(new Comprador(carrinho));
+					application.execute(new Comprador(carrinho,esteiraBuffer));
+					application.execute(new Caixa(esteiraBuffer));
 				//	application.execute(new Consumer(sharedLocation));
 				} // end try
 				catch (Exception exception) {

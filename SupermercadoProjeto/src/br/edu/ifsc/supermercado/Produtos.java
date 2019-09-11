@@ -7,7 +7,7 @@ public class Produtos {
 	
 	public static void criarProdutos() {
 		produtos = new ArrayList<>();
-		String [] descricaoProdutos = {"Abacaxi","Laranja","Limão","Banana","Maça","Uva","Pera","Manga","Abobora","Rucula","Melancia"};
+		String [] descricaoProdutos = {"Abacaxi","Laranja","Limï¿½o","Banana","Maï¿½a","Uva","Pera","Manga","Abobora","Rucula","Melancia"};
 		double [] valoresProdutos = {10,9,8,7,6,5,4,3,2,1};
 		for(int i =0; i< 10;i++) {
 			produtos.add(new Produto(descricaoProdutos[i], valoresProdutos[i])); 
@@ -22,6 +22,8 @@ public class Produtos {
 		return result;
 	}
 	public static Produto getProduto(int posicao) {
-		return produtos.get(posicao);
+		Produto geral =produtos.get(posicao);
+		Produto p = new Produto(geral.getNome(),geral.getValor());
+		return p;
 	}
 }

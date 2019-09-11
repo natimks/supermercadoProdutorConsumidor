@@ -38,15 +38,15 @@ public class Caixa implements Runnable
 
 	      System.out.printf( "\n%s %s.\n%s\n", 
 	         "Consumer read values totaling", produto.toString(), "Terminating Consumer." );
-	      if(!esteira.isEmpty())
-	    	  for(int i : esteira)
-	    		  Produto produtoRetirado = esteira.get(i);
-	              
-	    		  print("Tirando item " + produtoRetirado + "esteira e colocando no empacotamento");
-	    		  valorTotal += produtoRetirado.getValor();
-	    		  empacotamento.set(produtoRetirado);
-	    		  esteira.remove(i);
-	     else
-	    	 thread.sleep();
+//	      if(!esteira.isEmpty())
+//	    	  for(int i : esteira)
+//	    		  Produto produtoRetirado = esteira.get(i);
+//	              
+//	    		  print("Tirando item " + produtoRetirado + "esteira e colocando no empacotamento");
+//	    		  valorTotal += produtoRetirado.getValor();
+//	    		  empacotamento.set(produtoRetirado);
+//	    		  esteira.remove(i);
+//	     else
+//	    	 Thread.sleep();
 	   } // end method run
 	} // end class Consumer

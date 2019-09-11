@@ -2,7 +2,7 @@ package br.edu.ifsc.supermercado;
 
 import java.util.ArrayList;
 
-public class EsteiraBuffer implements Buffer{
+public class EsteiraBuffer implements Buffer {
 	private ArrayList<Produto> buffer;
 
 	int currentValue = 0;
@@ -11,21 +11,21 @@ public class EsteiraBuffer implements Buffer{
 	int posicaoRemocao = 0; // posGet
 	int posicaoInsercao = 0; // posSet
 
-	public EsteiraBuffer(ArrayList<Produto> carrinho) {
-			buffer = carrinho;
-		}
+	public EsteiraBuffer() {
+		buffer= new ArrayList<>();
+	}
 
 	// place value into buffer
 	public synchronized void set(Produto produto) {
-		while (posicoesUsadas == buffer.size()) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+//		while (posicoesUsadas == buffer.size()) {
+//			try {
+//				wait();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		buffer.add(posicaoInsercao, produto);
-		System.out.printf("Producer writes\t%2d", produto);
+	//	System.out.printf("Producer writes\t%2d", produto);
 		posicoesUsadas++;
 		posicaoInsercao = (posicaoInsercao + 1) % buffer.size();
 		notifyAll();
