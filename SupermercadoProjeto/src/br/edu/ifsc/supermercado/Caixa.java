@@ -1,52 +1,41 @@
 package br.edu.ifsc.supermercado;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
-public class Caixa implements Runnable 
-{ 
-	   private static Random generator = new Random();
-	   private ArrayList<Produtos> carrinho; // reference to shared object
-	   private CarrinhoBuffer carrinhoBuffer;
+public class Caixa implements Runnable {
+	private static Random generator = new Random();
+	private EsteiraBuffer esteiraBuffer;
+	private EmpacatomentoBuffer empacatomentoBuffer;
+	double valorConta;
 
-	   // constructor
-	   public Caixa( Buffer shared )
-	   {
-		   carrinhoBuffer = (CarrinhoBuffer) shared;
-	   } // end Consumer constructor
+	public Caixa(EsteiraBuffer shared, EmpacatomentoBuffer empacatomentoBuffer) {
+		esteiraBuffer = shared;
+		this.empacatomentoBuffer = empacatomentoBuffer;
+	}
 
-	   // read sharedLocation's value four times and sum the values
-	   public void run()
-	   {
-	      Produto produto = new Produto();
-	 
-	      for ( int count = 1; count <= 10; count++ ) 
-	      {
-	         // sleep 0 to 3 seconds, read value from buffer and add to sum
-	         try 
-	         {
-	            Thread.sleep( generator.nextInt( 1000 ) );    
-	            produto= carrinhoBuffer.get();
-	            System.out.printf( "\t\t\t%2d\n", produto );
-	         } // end try
-	         // if sleeping thread interrupted, print stack trace
-	         catch ( InterruptedException exception ) 
-	         {
-	            exception.printStackTrace();
-	         } // end catch
-	      } // end for
+	public void run() {
+		Produto produto = new Produto();
+		try {
+			for (int i = 0; i < esteiraBuffer.getSize(); i++) {
+				Thread.sleep(generator.nextInt(1000));
+				produto = esteiraBuffer.get();
+				createMessage("Passando item " + produto.getNome());
+				empacatomentoBuffer.set(produto);
+				valorConta += produto.getValor();
+			}
+		} catch (InterruptedException exception) {
+			exception.printStackTrace();
+		}
+		createMessage("Informando conta de R$ " + valorConta);
+	}
 
-	      System.out.printf( "\n%s %s.\n%s\n", 
-	         "Consumer read values totaling", produto.toString(), "Terminating Consumer." );
-//	      if(!esteira.isEmpty())
-//	    	  for(int i : esteira)
-//	    		  Produto produtoRetirado = esteira.get(i);
-//	              
-//	    		  print("Tirando item " + produtoRetirado + "esteira e colocando no empacotamento");
-//	    		  valorTotal += produtoRetirado.getValor();
-//	    		  empacotamento.set(produtoRetirado);
-//	    		  esteira.remove(i);
-//	     else
-//	    	 Thread.sleep();
-	   } // end method run
-	} // end class Consumer
+	public void createMessage(String message) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("[ HH:mm:ss ]");
+		LocalDateTime now = LocalDateTime.now();
+		System.out.println("Caixa : " + dtf.format(now) + " " + message);
+	}
+}
