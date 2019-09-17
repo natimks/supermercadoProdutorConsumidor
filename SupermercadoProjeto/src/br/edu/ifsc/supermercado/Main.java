@@ -1,6 +1,7 @@
 package br.edu.ifsc.supermercado;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,14 +12,12 @@ public class Main {
 	public static void main(String[] args) {
 		ExecutorService application = Executors.newFixedThreadPool(3);
 
-		int quantidadeProdutos = generator.nextInt(10); // revisar de 10 a 30 produtos!
-		ArrayList<Produto> carrinho = new ArrayList<>();
+		int quantidadeProdutos = generator.nextInt(30) + 10; // gerando uma quantidade entre 10 e 30 produtos
+
 		EsteiraBuffer esteiraBuffer = new EsteiraBuffer(quantidadeProdutos);
 		EmpacatomentoBuffer empacatomentoBuffer = new EmpacatomentoBuffer(quantidadeProdutos);
-		// try to start producer and consumer giving each of them access
-		// to sharedLocation
 		try {
-			application.execute(new Comprador(carrinho, esteiraBuffer));
+			application.execute(new Comprador(esteiraBuffer));
 			application.execute(new Caixa(esteiraBuffer, empacatomentoBuffer));
 			application.execute(new Empacotador(empacatomentoBuffer));
 		} // end try
@@ -27,6 +26,12 @@ public class Main {
 		} // end catch
 
 		application.shutdown(); // terminate application when threads end
+		while(!application.isTerminated()) {
+			
+		}
+			
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("[ HH:mm:ss ]");
+		LocalDateTime now = LocalDateTime.now();
+		System.out.println("Fim da simulação : " + dtf.format(now));
 	}
-
 }

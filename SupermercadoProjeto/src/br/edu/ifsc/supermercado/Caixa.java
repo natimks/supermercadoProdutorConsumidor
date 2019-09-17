@@ -2,12 +2,8 @@ package br.edu.ifsc.supermercado;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
 
 public class Caixa implements Runnable {
-	private static Random generator = new Random();
 	private EsteiraBuffer esteiraBuffer;
 	private EmpacatomentoBuffer empacatomentoBuffer;
 	double valorConta;
@@ -21,7 +17,7 @@ public class Caixa implements Runnable {
 		Produto produto = new Produto();
 		try {
 			for (int i = 0; i < esteiraBuffer.getSize(); i++) {
-				Thread.sleep(generator.nextInt(1000));
+				Thread.sleep(RandomUtils.generateRandomIntIntRange(2000, 4000));
 				produto = esteiraBuffer.get();
 				createMessage("Passando item " + produto.getNome());
 				empacatomentoBuffer.set(produto);

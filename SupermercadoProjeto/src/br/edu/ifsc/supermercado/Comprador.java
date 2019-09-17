@@ -11,8 +11,8 @@ public class Comprador implements Runnable {
 	private EsteiraBuffer esteira;
 	private double valorConta = 0.0;
 
-	public Comprador(ArrayList<Produto> shared, EsteiraBuffer esteira) {
-		carrinho = shared;
+	public Comprador(EsteiraBuffer esteira) {
+		carrinho = new ArrayList<>();
 		this.esteira = esteira;
 	}
 
@@ -21,7 +21,7 @@ public class Comprador implements Runnable {
 		createMessage("Iniciando compras");
 		for (int i = 0; i < esteira.getSize(); i++) {
 			try {
-				Thread.sleep((generator.nextInt((2000 - 1000) + 1) + 1000));
+				Thread.sleep(RandomUtils.generateRandomIntIntRange(1000, 2000));
 				int posicaoProduto = generator.nextInt(10);
 				Produto produto = Produtos.getProduto(posicaoProduto);
 				carrinho.add(produto);
@@ -36,8 +36,7 @@ public class Comprador implements Runnable {
 			try {
 				Thread.sleep(1000);
 				Produto produtoRetirado = carrinho.remove(j);
-				createMessage(
-						"Depositando item " + produtoRetirado.getNome() + produtoRetirado.getValor() + " na esteira");
+				createMessage("Depositando item " + produtoRetirado.getNome() + " na esteira");
 				valorConta += produtoRetirado.getValor();
 				esteira.set(produtoRetirado);
 			} catch (InterruptedException e) {

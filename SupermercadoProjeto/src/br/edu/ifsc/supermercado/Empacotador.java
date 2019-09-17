@@ -2,10 +2,8 @@ package br.edu.ifsc.supermercado;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 public class Empacotador implements Runnable {
-	private static Random generator = new Random();
 	private EmpacatomentoBuffer empacatomentoBuffer;
 	double valorConta;
 
@@ -17,9 +15,9 @@ public class Empacotador implements Runnable {
 		Produto produto = new Produto();
 		try {
 			for (int i = 0; i < empacatomentoBuffer.getSize(); i++) {
-				Thread.sleep(generator.nextInt(1000));
+				Thread.sleep(2000);
 				produto = empacatomentoBuffer.get();
-				createMessage("Acomodando item " + produto.getNome()+" na sacola");
+				createMessage("Acomodando item " + produto.getNome() + " na sacola");
 			}
 		} catch (InterruptedException exception) {
 			exception.printStackTrace();

@@ -1,10 +1,7 @@
 package br.edu.ifsc.supermercado;
 
-import java.util.ArrayList;
-
 public class EmpacatomentoBuffer {
 	private Produto[] buffer;
-	private int max;
 	int currentValue = 0;
 
 	int posicoesUsadas = 0;
@@ -13,7 +10,6 @@ public class EmpacatomentoBuffer {
 
 	public EmpacatomentoBuffer(int max) {
 		buffer = new Produto[max];
-		this.max = max;
 	}
 
 	// place value into buffer
