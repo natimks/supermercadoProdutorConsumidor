@@ -42,7 +42,7 @@ public class Comprador implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		} // ACABOU DE ESCOLHER OS PRODUTOS
+		} // ACABOU DE COLOCAR OS PRODUTOS NA ESTEIRA
 		createMessage("Pagando conta de R$ " + valorConta);
 	}
 
