@@ -9,11 +9,13 @@ public class Comprador implements Runnable {
 	private static Random generator = new Random();
 	private ArrayList<Produto> carrinho;
 	private EsteiraBuffer esteira;
+	private ContaBuffer conta;
 	private double valorConta = 0.0;
 
-	public Comprador(EsteiraBuffer esteira) {
+	public Comprador(EsteiraBuffer esteira,ContaBuffer conta) {
 		carrinho = new ArrayList<>();
 		this.esteira = esteira;
+		this.conta  = conta;
 	}
 
 	public void run() {
@@ -37,8 +39,8 @@ public class Comprador implements Runnable {
 				Thread.sleep(1000);
 				Produto produtoRetirado = carrinho.remove(j);
 				createMessage("Depositando item " + produtoRetirado.getNome() + " na esteira");
-				valorConta += produtoRetirado.getValor();
 				esteira.set(produtoRetirado);
+				valorConta += conta.get();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

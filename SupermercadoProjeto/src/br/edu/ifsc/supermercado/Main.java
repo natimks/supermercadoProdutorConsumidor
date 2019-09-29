@@ -12,21 +12,24 @@ public class Main {
 
 		EsteiraBuffer esteiraBuffer = new EsteiraBuffer(quantidadeProdutos);
 		EmpacatomentoBuffer empacatomentoBuffer = new EmpacatomentoBuffer(quantidadeProdutos);
-		Thread comprador = new Thread(new Comprador(esteiraBuffer));
-		Thread caixa = new Thread(new Caixa(esteiraBuffer, empacatomentoBuffer));
+		ContaBuffer contaBuffer = new ContaBuffer();
+		Thread comprador = new Thread(new Comprador(esteiraBuffer, contaBuffer));
+		Thread caixa = new Thread(new Caixa(esteiraBuffer, empacatomentoBuffer, contaBuffer));
 		Thread empacotador = new Thread(new Empacotador(empacatomentoBuffer));
 		try {
 			comprador.start();
 			caixa.start();
 			empacotador.start();
+			caixa.join();
+			comprador.join();
 			empacotador.join();
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("[ HH:mm:ss ]");
 			LocalDateTime now = LocalDateTime.now();
-			System.out.println("Fim da simulação : " + dtf.format(now));	
+			System.out.println("Fim da simulação : " + dtf.format(now));
 		} // end try
 		catch (Exception exception) {
 			exception.printStackTrace();
 		} // end catch
-		
+
 	}
 }

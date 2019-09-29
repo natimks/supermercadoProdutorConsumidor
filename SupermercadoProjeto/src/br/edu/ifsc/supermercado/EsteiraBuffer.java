@@ -2,17 +2,15 @@ package br.edu.ifsc.supermercado;
 
 public class EsteiraBuffer implements Buffer {
 	private Produto[] buffer;
-	int currentValue = 0;
 
 	int posicoesUsadas = 0;
-	int posicaoRemocao = 0; // posGet
-	int posicaoInsercao = 0; // posSet
+	int posicaoRemocao = 0; 
+	int posicaoInsercao = 0; 
 
 	public EsteiraBuffer(int max) {
 		buffer = new Produto[max];
 	}
 
-	// place value into buffer
 	public synchronized void set(Produto value) {
 		while (posicoesUsadas == buffer.length) {
 			try {
@@ -22,13 +20,11 @@ public class EsteiraBuffer implements Buffer {
 			}
 		}
 		buffer[posicaoInsercao] = value;
-		// System.out.printf("Producer writes %s", value.getNome());
 		posicoesUsadas++;
 		posicaoInsercao = (posicaoInsercao + 1) % buffer.length;
 		notifyAll();
-	} // end method set
+	} 
 
-	// return value from buffer
 	public synchronized Produto get() {
 		while (posicoesUsadas == 0) {
 			try {
@@ -39,14 +35,13 @@ public class EsteiraBuffer implements Buffer {
 		}
 
 		posicoesUsadas--;
-
 		Produto value = null;
 		value = buffer[posicaoRemocao];
 		posicaoRemocao = (posicaoRemocao + 1) % buffer.length;
 
 		notifyAll();
 		return value;
-	} // end method get
+	} 
 
 	public int getSize() {
 		return buffer.length;

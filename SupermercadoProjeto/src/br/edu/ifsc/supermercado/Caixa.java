@@ -6,11 +6,13 @@ import java.time.format.DateTimeFormatter;
 public class Caixa implements Runnable {
 	private EsteiraBuffer esteiraBuffer;
 	private EmpacatomentoBuffer empacatomentoBuffer;
-	double valorConta;
+	private ContaBuffer contaBuffer;
+	private double valorConta;
 
-	public Caixa(EsteiraBuffer shared, EmpacatomentoBuffer empacatomentoBuffer) {
-		esteiraBuffer = shared;
+	public Caixa(EsteiraBuffer esteiraBuffer, EmpacatomentoBuffer empacatomentoBuffer,ContaBuffer conta) {
+		this.esteiraBuffer = esteiraBuffer;
 		this.empacatomentoBuffer = empacatomentoBuffer;
+		this.contaBuffer = conta;
 	}
 
 	public void run() {
@@ -19,9 +21,11 @@ public class Caixa implements Runnable {
 			for (int i = 0; i < esteiraBuffer.getSize(); i++) {
 				Thread.sleep(RandomUtils.generateRandomIntIntRange(2000, 4000));
 				produto = esteiraBuffer.get();
+				contaBuffer.set(produto.getValor());
 				createMessage("Passando item " + produto.getNome());
 				empacatomentoBuffer.set(produto);
 				valorConta += produto.getValor();
+				
 			}
 		} catch (InterruptedException exception) {
 			exception.printStackTrace();
